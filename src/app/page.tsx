@@ -1,7 +1,8 @@
-export default function Home() {
-  return (
-    <main>
-      <h1>Welcome to Maarifa AI</h1>
-    </main>
-  );
+import type { Metadata } from "next";
+import { WorkspacePage } from "../components/layout/WorkspacePage";
+
+export const metadata: Metadata = { title: "Dashboard" };
+
+export default function Page() {
+  return <WorkspacePage section="/" />;
 }
