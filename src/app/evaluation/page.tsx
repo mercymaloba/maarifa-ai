@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { WorkspacePage } from "../../components/layout/WorkspacePage";
+import { EvaluationScreen } from "../../features/evaluation/EvaluationScreen";
 
 export const metadata: Metadata = { title: "Evaluation" };
 
 export default function Page() {
-  return <WorkspacePage section="/evaluation" />;
+  return <EvaluationScreen />;
 }

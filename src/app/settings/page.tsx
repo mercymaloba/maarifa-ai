@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { WorkspacePage } from "../../components/layout/WorkspacePage";
+import { SettingsScreen } from "../../features/settings/SettingsScreen";
 
 export const metadata: Metadata = { title: "Settings" };
 
 export default function Page() {
-  return <WorkspacePage section="/settings" />;
+  return <SettingsScreen />;
 }

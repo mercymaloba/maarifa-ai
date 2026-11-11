@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { WorkspacePage } from "../../components/layout/WorkspacePage";
+import { ChatScreen } from "../../features/chat/ChatScreen";
 
 export const metadata: Metadata = { title: "Chat" };
 
 export default function Page() {
-  return <WorkspacePage section="/chat" />;
+  return <ChatScreen />;
 }

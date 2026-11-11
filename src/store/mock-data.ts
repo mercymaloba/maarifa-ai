@@ -1,0 +1,38 @@
+export type DocumentStatus = "Ready" | "Processing" | "Failed";
+export type TaskStatus = "To do" | "In progress" | "Completed";
+export interface KnowledgeDocument { id: string; name: string; type: string; size: string; status: DocumentStatus; uploaded: string; text: string; chunks: number }
+export interface Task { id: string; title: string; description: string; status: TaskStatus; priority: "Low" | "Medium" | "High"; due: string }
+export interface Message { id: string; role: "user" | "assistant"; content: string; citations?: { documentId: string; quote: string }[] }
+export interface Conversation { id: string; title: string; messages: Message[] }
+export interface AgentRun { id: string; name: string; task: string; status: "Completed" | "Failed" | "Running"; time: string; duration: string; steps: { title: string; detail: string; status: "Completed" | "Failed" | "Running" }[] }
+export interface TestCase { id: string; question: string; expected: string; actual: string; score: number; latency: string; passed: boolean; documentId: string }
+export const documents: KnowledgeDocument[] = [
+  { id: "doc-1", name: "Product strategy 2026.pdf", type: "PDF", size: "2.4 MB", status: "Ready", uploaded: "2026-11-11", chunks: 24, text: "Our product strategy focuses on making organizational knowledge accessible and actionable. The three priorities are reliable retrieval, evidence-based answers, and agent-assisted workflows.\n\nThe Q4 launch includes document ingestion, conversational search, and task management. Success is measured by answer groundedness above 90%, retrieval precision above 85%, and a median response time below three seconds.\n\nThe product team owns roadmap delivery. Weekly evaluations ensure every release meets quality and security requirements." },
+  { id: "doc-2", name: "Employee handbook.pdf", type: "PDF", size: "1.8 MB", status: "Ready", uploaded: "2026-11-10", chunks: 18, text: "Employees receive 21 days of annual leave. Leave requests should be submitted at least two weeks in advance and approved by the team lead.\n\nRemote work is available for up to three days each week. All company devices must use disk encryption and multi-factor authentication.\n\nNew team members complete onboarding in their first week, including security training and an introduction to the knowledge workspace." },
+  { id: "doc-3", name: "Customer research.txt", type: "TXT", size: "48 KB", status: "Ready", uploaded: "2026-11-09", chunks: 8, text: "Research participants want to find trusted answers without searching across multiple tools. Source citations are the most requested feature.\n\nParticipants prefer concise summaries with an option to explore original documents. Teams also need a clear record of automated actions and a way to review agent decisions." },
+  { id: "doc-4", name: "Q4 financial summary.pdf", type: "PDF", size: "3.1 MB", status: "Processing", uploaded: "2026-11-11", chunks: 0, text: "" },
+  { id: "doc-5", name: "Scanned archive.pdf", type: "PDF", size: "6.2 MB", status: "Failed", uploaded: "2026-11-08", chunks: 0, text: "" },
+];
+export const tasks: Task[] = [
+  { id: "task-1", title: "Summarize product strategy", description: "Extract the three strategic priorities and launch success metrics.", status: "In progress", priority: "High", due: "2026-11-12" },
+  { id: "task-2", title: "Review onboarding documents", description: "Check the employee handbook for missing onboarding steps.", status: "To do", priority: "Medium", due: "2026-11-14" },
+  { id: "task-3", title: "Prepare customer research brief", description: "Compile the key findings from customer research.", status: "Completed", priority: "Medium", due: "2026-11-10" },
+  { id: "task-4", title: "Evaluate retrieval quality", description: "Run the evaluation suite against the knowledge base.", status: "To do", priority: "High", due: "2026-11-15" },
+];
+export const conversations: Conversation[] = [
+  { id: "conv-1", title: "Product strategy priorities", messages: [ { id: "m1", role: "user", content: "What are our product priorities?" }, { id: "m2", role: "assistant", content: "The strategy identifies three priorities: reliable retrieval, evidence-based answers, and agent-assisted workflows. The Q4 launch brings these together through document ingestion, conversational search, and task management.", citations: [{ documentId: "doc-1", quote: "The three priorities are reliable retrieval, evidence-based answers, and agent-assisted workflows." }] } ] },
+  { id: "conv-2", title: "Leave policy", messages: [ { id: "m3", role: "user", content: "How much annual leave do employees receive?" }, { id: "m4", role: "assistant", content: "Employees receive 21 days of annual leave. Submit requests at least two weeks in advance for team lead approval.", citations: [{ documentId: "doc-2", quote: "Employees receive 21 days of annual leave." }] } ] },
+];
+export const agentRuns: AgentRun[] = [
+  { id: "run-104", name: "Research assistant", task: "Summarize product strategy", status: "Running", time: "11 Nov 2026, 10:42 EAT", duration: "12s", steps: [{ title: "Understand request", detail: "Identified strategic priorities and success metrics as the target.", status: "Completed" }, { title: "Retrieve evidence", detail: "Retrieved 4 relevant chunks from Product strategy 2026.pdf.", status: "Completed" }, { title: "Draft summary", detail: "Generating a concise, cited summary.", status: "Running" }] },
+  { id: "run-103", name: "Research assistant", task: "Prepare customer research brief", status: "Completed", time: "11 Nov 2026, 09:18 EAT", duration: "8.4s", steps: [{ title: "Retrieve evidence", detail: "Found 3 relevant customer research chunks.", status: "Completed" }, { title: "Generate brief", detail: "Created a summary of customer needs with source citations.", status: "Completed" }, { title: "Validate response", detail: "All claims supported by retrieved evidence.", status: "Completed" }] },
+  { id: "run-102", name: "Document processor", task: "Process scanned archive", status: "Failed", time: "10 Nov 2026, 16:05 EAT", duration: "2.1s", steps: [{ title: "Read document", detail: "Opened Scanned archive.pdf.", status: "Completed" }, { title: "Extract text", detail: "No selectable text found. OCR is required before ingestion.", status: "Failed" }] },
+];
+export const testCases: TestCase[] = [
+  { id: "eval-1", question: "What are the product priorities?", expected: "Reliable retrieval, evidence-based answers, and agent-assisted workflows.", actual: "The three priorities are reliable retrieval, evidence-based answers, and agent-assisted workflows.", score: 98, latency: "1.4s", passed: true, documentId: "doc-1" },
+  { id: "eval-2", question: "How many days of annual leave are available?", expected: "21 days, requested two weeks in advance.", actual: "Employees receive 21 days of annual leave and should request leave two weeks ahead.", score: 96, latency: "1.1s", passed: true, documentId: "doc-2" },
+  { id: "eval-3", question: "What do customers request most?", expected: "Source citations.", actual: "Customers most frequently request source citations and concise summaries.", score: 92, latency: "1.6s", passed: true, documentId: "doc-3" },
+  { id: "eval-4", question: "What is the remote work policy?", expected: "Up to three days per week.", actual: "Remote work is available throughout the week.", score: 48, latency: "1.3s", passed: false, documentId: "doc-2" },
+];
+export const defaultPreferences = { model: "llama3.2", temperature: 0.3, topK: 5, chunkSize: 512, citations: true, agentsEnabled: true, requireApproval: true, maxSteps: 10, redactSensitive: true, retentionDays: 30 };
+export type Preferences = typeof defaultPreferences;
