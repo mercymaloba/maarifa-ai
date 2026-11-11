@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { WorkspacePage } from "../../components/layout/WorkspacePage";
+import { ActivityScreen } from "../../features/activity/ActivityScreen";
 
 export const metadata: Metadata = { title: "Agent Activity" };
 
 export default function Page() {
-  return <WorkspacePage section="/activity" />;
+  return <ActivityScreen />;
 }

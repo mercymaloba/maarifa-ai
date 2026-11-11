@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { LoadingState } from "../components/ui/FeedbackStates";
+import { StoreProvider } from "../store/StoreProvider";
 import { AppShell } from "../components/layout/AppShell";
 import { Inter } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
@@ -25,7 +28,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppShell>{children}</AppShell>
+            <Suspense fallback={<LoadingState />}>
+              <StoreProvider><AppShell>{children}</AppShell></StoreProvider>
+            </Suspense>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
